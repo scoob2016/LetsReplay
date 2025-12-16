@@ -2,18 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Showdown Replay Viewer</title>
+<title>LetsReplay Viewer</title>
 <script src="js/template.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 <script src="js/main.js"></script>
-<style>
-body {font-family: sans-serif; padding: 1em;}
-button {margin-top: 0.5em;}
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <h1>LetsReplay</h1>
-<h2>This is not associated with Showdown</h2>
-<div class="iframe-result-container" style="margin-top:1em;"></div>
+<h2>Not affiliated with Pokémon Showdown</h2>
+<p>LetsReplay is a community tool for viewing battle logs, independent of Pokémon Showdown.</p>
+
+<div class="iframe-result-container"></div>
+
+<button id="toggle-theme">Switch to Light Mode</button>
+
+<script>
+const button = document.getElementById('toggle-theme');
+button.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    if(document.body.classList.contains('light')) {
+        button.textContent = "Switch to Dark Mode";
+    } else {
+        button.textContent = "Switch to Light Mode";
+    }
+});
+</script>
 </body>
 </html>
