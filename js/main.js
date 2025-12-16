@@ -25,7 +25,7 @@ function getQueryParam(name) {
 }
 
 function initialize() {
-    const logFromURL = getQueryParam("log");
+    const logFromURL = window.location.hash.slice(1);
     if (logFromURL) {
         try {
             const log = LZString.decompressFromEncodedURIComponent(logFromURL);
