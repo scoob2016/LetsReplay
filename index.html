@@ -9,22 +9,10 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<button id="toggle-theme">Switch to Light Mode</button>
-<h1>LetsReplay</h1>
-<p>Not affiliated with Pokémon Showdown</p>
-
+<div class="content-wrapper">
+    <h1>LetsReplay</h1>
+    <p>Not affiliated with Pokémon Showdown</p>
+</div>
 <div class="iframe-result-container"></div>
-
-<script>
-const button = document.getElementById('toggle-theme');
-button.addEventListener('click', () => {
-    document.body.classList.toggle('light');
-    if(document.body.classList.contains('light')) {
-        button.textContent = "Switch to Dark Mode";
-    } else {
-        button.textContent = "Switch to Light Mode";
-    }
-});
-</script>
 </body>
 </html>
