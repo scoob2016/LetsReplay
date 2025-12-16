@@ -26,15 +26,23 @@ function getQueryParam(name) {
 
 function initialize() {
     const logFromURL = window.location.hash.slice(1);
-    if (logFromURL) {
-        try {
-            const log = LZString.decompressFromEncodedURIComponent(logFromURL);
-            if (!log) throw new Error("Invalid or corrupted log");
-            setReplay(log);
-        } catch (e) {
-            console.error("Failed to load log from URL. ", e);
-            alert("Invalid log URL. Please contact support!");
+    if (!logFromURL) return;
+
+    try {
+        const base64 = logFromURL.replace(/-/g, '+').replace(/_/g, '/');
+        const str = atob(base64);
+        
+        const bytes = new Uint8Array(str.length);
+        for (let i = 0; i < str.length; i++) {
+            bytes[i] = str.charCodeAt(i);
         }
+
+        const log = pako.inflate(bytes, { to: 'string' });
+
+        setReplay(log);
+    } catch (e) {
+        console.error("Failed to load log from URL.", e);
+        alert("Invalid log URL. Please contact support!");
     }
 }
 
