@@ -50,10 +50,12 @@ function initialize() {
     const logFromURL = getQueryParam("log");
     if (logFromURL) {
         try {
-            const log = LZString.decompressFromEncodedURIComponent(logFromURL) || decodeURIComponent(logFromURL);
+            const log = LZString.decompressFromEncodedURIComponent(logFromURL);
+            if (!log) throw new Error("Invalid or corrupted log");
             setReplay(log);
         } catch (e) {
-            console.error("Failed to load log from URL", e);
+            console.error("Failed to load log from URL. ", e);
+            alert("Invalid log URL. Please contact support!");
         }
     }
 }
