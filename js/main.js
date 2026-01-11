@@ -52,7 +52,7 @@ function setReplay(log) {
 function initialize() {
 
     const raw = window.location.hash.slice(1);
-    if (!raw.startsWith("lr1:")) return;
+    if (!raw.startsWith("cr1:")) return;
 
     const payload = raw.slice(4);
 
