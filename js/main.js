@@ -9,36 +9,27 @@ function setTheme(theme) {
 
     const root = document.documentElement;
 
-    if (theme.bg) {
-        root.style.setProperty('--bg-color', theme.bg);
+    if (theme.b) {
+        root.style.setProperty('--bg-color', theme.b);
     }
 
-    if (theme.text) {
-        root.style.setProperty('--text-color', theme.text);
+    if (theme.tc) {
+        root.style.setProperty('--accent-color', theme.tc);
     }
 
-    if (theme.accent) {
-        root.style.setProperty('--accent-color', theme.accent);
+    if (theme.eb) {
+        root.style.setProperty('--box-bg', theme.eb);
     }
 
-    if (theme.box) {
-        root.style.setProperty('--box-bg', theme.box);
-    }
-
-    if (theme.title) {
-        document.title = theme.title;
-
+    if (theme.t) {
+        document.title = theme.t;
         const heading = document.querySelector('h1');
-        if (heading) {
-            heading.textContent = theme.title;
-        }
+        if (heading) heading.textContent = theme.t;
     }
 
-    if (theme.footerText) {
+    if (theme.f) {
         const footer = document.querySelector('.site-footer');
-        if (footer) {
-            footer.textContent = theme.footerText;
-        }
+        if (footer) footer.style.color = theme.f;
     }
 }
 
