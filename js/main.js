@@ -4,6 +4,44 @@ function generateHTML(log) {
     return window.TemplateHTML.replace("__BATTLE_LOG__", log);
 }
 
+function setTheme(theme) {
+    if (!theme || typeof theme !== "object") return;
+
+    const root = document.documentElement;
+
+    if (theme.bg) {
+        root.style.setProperty('--bg-color', theme.bg);
+    }
+
+    if (theme.text) {
+        root.style.setProperty('--text-color', theme.text);
+    }
+
+    if (theme.accent) {
+        root.style.setProperty('--accent-color', theme.accent);
+    }
+
+    if (theme.box) {
+        root.style.setProperty('--box-bg', theme.box);
+    }
+
+    if (theme.title) {
+        document.title = theme.title;
+
+        const heading = document.querySelector('h1');
+        if (heading) {
+            heading.textContent = theme.title;
+        }
+    }
+
+    if (theme.footerText) {
+        const footer = document.querySelector('.site-footer');
+        if (footer) {
+            footer.textContent = theme.footerText;
+        }
+    }
+}
+
 function setReplay(log) {
     const html = generateHTML(log);
     const url = "data:text/html;charset=utf-8," + encodeURIComponent(html);
@@ -12,21 +50,26 @@ function setReplay(log) {
 }
 
 function initialize() {
-    const logFromURL = window.location.hash.slice(1);
-    if (!logFromURL) return;
+
+    const raw = window.location.hash.slice(1);
+    if (!raw.startsWith("lr1:")) return;
+
+    const payload = raw.slice(4);
 
     try {
-        const base64 = logFromURL.replace(/-/g, '+').replace(/_/g, '/');
-        const str = atob(base64);
-        
-        const bytes = new Uint8Array(str.length);
-        for (let i = 0; i < str.length; i++) {
-            bytes[i] = str.charCodeAt(i);
+
+        const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+        const binary = atob(base64);
+
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
         }
 
-        const log = pako.inflate(bytes, { to: 'string' });
-
-        setReplay(log);
+        const json = pako.inflate(bytes, { to: 'string' });
+        const data = JSON.parse(json);
+        setTheme(data.t)
+        setReplay(data.r)
     } catch (e) {
         console.error("Failed to load log from URL.", e);
         alert("Invalid log URL. Please contact support!");
