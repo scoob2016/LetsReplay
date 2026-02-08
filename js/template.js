@@ -66,10 +66,16 @@ function replaceBattleSprites() {
 
                 if (img.src !== newSrc) {
                     img.src = newSrc;
+                    img.onload = () => {
+                        const naturalWidth = img.naturalWidth;
+
+                        img.style.width = nautralWidth + 'px';
+
+                        const left = parseFloat(img.style.left || 0);
+                        img.style.left = (left + (96 - width)/2) + 'px';
+                        img.style.top = (top + (96 - 96)/2) + 'px'; // top still 0 unless you want offset
+                    };
                     img.style.width = 'auto';
-                    const computedWidth = img.naturalWidth * (96 / img.naturalHeight);
-                    const left = parseFloat(img.style.left || 0);
-                    img.style.left = (left + (96 - computedWidth)/2) + 'px';
                 }
                 break;
             }
