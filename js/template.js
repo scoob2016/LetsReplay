@@ -52,45 +52,48 @@ body{padding:12px 0;}
 <script>
 window.FAKEMON_SPRITES = __FAKEMON_JSON__;
 
+const patchedImages = new WeakSet();
+
 function replaceBattleSprites() {
     document.querySelectorAll('.battle img').forEach(img => {
         const src = img.src;
         if (!src) return;
 
-        const match = src.match(/\\/sprites\\/ani(-back)?\\/([a-z0-9-]+)\\.gif$/);
+        const match = src.match(/\\/sprites\\/ani(-back)?\\/([a-z0-9-]+)\\.[a-z0-9]+$/i);
         if (!match) return;
 
         const isBack = !!match[1];
         const speciesId = match[2];
 
         if (window.FAKEMON_SPRITES?.[speciesId]) {
-            img.src = isBack
+            const newSrc = isBack
                 ? window.FAKEMON_SPRITES[speciesId].back
                 : window.FAKEMON_SPRITES[speciesId].front;
+
+            if (img.src !== newSrc) {
+                img.src = newSrc;
+                patchedImages.add(img);
+            }
         }
     });
 }
 
-function waitForBattleImages() {
+function waitForBattleContainer() {
     const battleDiv = document.querySelector('.battle .innerbattle');
     if (!battleDiv) {
-        setTimeout(waitForBattleImages, 50);
+        setTimeout(waitForBattleContainer, 50);
         return;
-    }   
-
-    const imgs = battleDiv.querySelectorAll('img');
-    if (imgs.length > 0) {
-        replaceBattleSprites();
-
-        const observer = new MutationObserver(replaceBattleSprites);
-        observer.observe(battleDiv, { childList: true, subtree: true });
-        console.log("hello");
-    } else {
-        setTimeout(waitForBattleImages, 100);
     }
+
+    replaceBattleSprites();
+
+    const observer = new MutationObserver(replaceBattleSprites);
+    observer.observe(battleDiv, { childList: true, subtree: true });
+
+    setInterval(replaceBattleSprites, 100);
 }
 
-waitForBattleImages();
+waitForBattleContainer();
 </script>
 </head>
 <body>
