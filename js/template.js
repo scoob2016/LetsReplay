@@ -86,11 +86,13 @@ function replaceBattleSprites() {
             let speciesId;
 
             const match = aria.match(/\(([^)]+)\)/);
+            console.log(match)
             if (match) {
                 speciesId = match[1].toLowerCase();
             } else {
                 speciesId = aria.toLowerCase();
             }
+            console.log(speciesId)
 
             if (window.FAKEMON_SPRITES[speciesId]) {
                 const front = window.FAKEMON_SPRITES[speciesId].front;
