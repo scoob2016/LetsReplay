@@ -48,42 +48,40 @@ body{padding:12px 0;}
 .subtle {color:#3A4A66;}
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-window.FAKEMON_SPRITES = __FAKEMON_JSON__;
-</script>
 <script src="https://play.pokemonshowdown.com/js/replay-embed.js"></script>
 <script>
-(function() {
-    const patchInterval = setInterval(() => {
-        if (window.Dex && Dex.getSpriteData && !Dex.getSpriteData.__patched) {
-            const orig = Dex.getSpriteData;
+window.FAKEMON_SPRITES = __FAKEMON_JSON__;
+
+(function patchSprites() {
+    const interval = setInterval(() => {
+        if (window.Dex && Dex.getSpriteData) {
+            const origDex = Dex.getSpriteData;
             Dex.getSpriteData = function(species, side, options) {
-                const id = (toID(species) || '').toLowerCase();
+                const id = toID(species);
                 if (window.FAKEMON_SPRITES?.[id]) {
                     const s = window.FAKEMON_SPRITES[id];
-                    return {url: side==='back'?s.back:s.front, w:96, h:96, y:0};
+                    return {url: side === 'back' ? s.back : s.front, w:96, h:96, y:0};
                 }
-                return orig.call(this, species, side, options);
+                return origDex.call(this, species, side, options);
             };
         }
 
-        if (window.Battle && Battle.prototype.getSpriteUrl && !Battle.prototype.getSpriteUrl.__patched) {
-            const orig = Battle.prototype.getSpriteUrl;
+        if (window.Battle && Battle.prototype.getSpriteUrl) {
+            const origBattle = Battle.prototype.getSpriteUrl;
             Battle.prototype.getSpriteUrl = function(pokemon, isBack) {
-                const id = (pokemon.species || '').toLowerCase();
+                const id = toID(pokemon.species || pokemon);
                 if (window.FAKEMON_SPRITES?.[id]) {
                     const s = window.FAKEMON_SPRITES[id];
                     return isBack ? s.back : s.front;
                 }
-                return orig.call(this, pokemon, isBack);
+                return origBattle.call(this, pokemon, isBack);
             };
-            Battle.prototype.getSpriteUrl.__patched = true;
         }
 
-        if (Dex.getSpriteData.__patched && Battle.prototype.getSpriteUrl.__patched) {
-            clearInterval(patchInterval);
+        if (window.Dex && Dex.getSpriteData && window.Battle && Battle.prototype.getSpriteUrl) {
+            clearInterval(interval);
         }
-    }, 10);
+    }, 20);
 })();
 </script>
 </head>
