@@ -92,6 +92,7 @@ function replaceBattleSprites() {
 
                 picon.style.background = \`transparent url(\${front}) no-repeat center center\`;
                 picon.style.backgroundSize = 'contain';
+                console.log(speciesId);
             }
         });
 }
