@@ -86,8 +86,6 @@ function replaceBattleSprites() {
             let speciesId;
 
             const matches = aria.match(/\(([^)]+)\)/g);
-
-            const matches = aria.match(/\(([^)]+)\)/g);
             if (matches && matches.length >= 2) {
                 speciesId = matches[matches.length - 2].slice(1, -1).toLowerCase();
             } else if (matches && matches.length === 1) {
