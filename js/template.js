@@ -72,8 +72,11 @@ function replaceBattleSprites() {
 }
 
 function waitForBattleImages() {
-    const battleDiv = document.querySelector('.battle');
-    if (!battleDiv) return;
+    const battleDiv = document.querySelector('.battle .innerbattle');
+    if (!battleDiv) {
+        setTimeout(waitForBattleImages, 50);
+        return;
+    }   
 
     const imgs = battleDiv.querySelectorAll('img');
     if (imgs.length > 0) {
@@ -81,6 +84,7 @@ function waitForBattleImages() {
 
         const observer = new MutationObserver(replaceBattleSprites);
         observer.observe(battleDiv, { childList: true, subtree: true });
+        console.log("hello");
     } else {
         setTimeout(waitForBattleImages, 100);
     }
