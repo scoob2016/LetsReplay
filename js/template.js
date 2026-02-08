@@ -47,40 +47,29 @@ body{padding:12px 0;}
 .message-overflow::before {font-size:9pt;content:'...';}
 .subtle {color:#3A4A66;}
 </style>
-<script>
-window.FAKEMON_SPRITES = __FAKEMON_JSON__;
-</script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-(function patchSprites() {
-  const interval = setInterval(() => {
-    if (window.Dex && Dex.getSpriteData && !Dex.getSpriteData.__patched) {
-      const origDex = Dex.getSpriteData;
-      Dex.getSpriteData = function(species, side, options) {
-        const id = toID(species);
-        if (window.FAKEMON_SPRITES[id]) {
-          const s = window.FAKEMON_SPRITES[id];
-          return {url: side==='back'?s.back:s.front, w:96,h:96,y:0};
+window.FAKEMON_SPRITES = __FAKEMON_JSON__;
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register(
+    URL.createObjectURL(new Blob([`
+      self.addEventListener('fetch', event => {
+        const url = new URL(event.request.url);
+
+        if (url.pathname.startsWith('/sprites/') && url.pathname.endsWith('.png')) {
+          const name = url.pathname.split('/').pop().replace('.png','').toLowerCase();
+          const fakemon = self.FAKEMON_SPRITES && self.FAKEMON_SPRITES[name];
+          if (fakemon) {
+            event.respondWith(fetch(fakemon.front));
+            return;
+          }
         }
-        return origDex.call(this, species, side, options);
-      };
-      Dex.getSpriteData.__patched = true;
-    }
-    if (typeof Battle !== 'undefined' && !Battle.prototype.getSpriteUrl.__patched) {
-      const origBattle = Battle.prototype.getSpriteUrl;
-      Battle.prototype.getSpriteUrl = function(pokemon, isBack) {
-        const id = toID(pokemon.species);
-        if (window.FAKEMON_SPRITES[id]) {
-          const s = window.FAKEMON_SPRITES[id];
-          return isBack ? s.back : s.front;
-        }
-        return origBattle.call(this, pokemon, isBack);
-      };
-      Battle.prototype.getSpriteUrl.__patched = true;
-      clearInterval(interval);
-    }
-  }, 10);
-})();
+        event.respondWith(fetch(event.request));
+      });
+    `], { type: 'text/javascript' }))
+  );
+}
 </script>
 <script src="https://play.pokemonshowdown.com/js/replay-embed.js"></script>
 </head>
