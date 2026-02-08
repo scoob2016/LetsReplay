@@ -71,7 +71,6 @@ function replaceBattleSprites() {
                     if (!img._sizeObserver) {
                         img._sizeObserver = new MutationObserver(() => {
                             img.style.setProperty('width', 'auto', 'important');
-                            img.style.setProperty('height', 'auto', 'important');
                         });
                         img._sizeObserver.observe(img, { attributes: true, attributeFilter: ['style'] });
                     }
