@@ -66,6 +66,7 @@ function replaceBattleSprites() {
 
                 if (img.src !== newSrc) {
                     img.src = newSrc;
+                    img.classList.remove('pixelated');
                     img.style.setProperty('width', 'auto', 'important');
                 }
                 break;
