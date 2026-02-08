@@ -58,14 +58,13 @@ window.FAKEMON_SPRITES = __FAKEMON_JSON__;
         if (window.Dex && Dex.getSpriteData && !Dex.getSpriteData.__patched) {
             const orig = Dex.getSpriteData;
             Dex.getSpriteData = function(species, side, options) {
-                const id = (toId(species) || '').toLowerCase();
+                const id = (toID(species) || '').toLowerCase();
                 if (window.FAKEMON_SPRITES?.[id]) {
                     const s = window.FAKEMON_SPRITES[id];
                     return {url: side==='back'?s.back:s.front, w:96, h:96, y:0};
                 }
                 return orig.call(this, species, side, options);
             };
-            Dex.getSpriteData.__patched = true;
         }
 
         if (window.Battle && Battle.prototype.getSpriteUrl && !Battle.prototype.getSpriteUrl.__patched) {
