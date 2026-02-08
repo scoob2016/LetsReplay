@@ -52,23 +52,6 @@ body{padding:12px 0;}
 <script>
 window.FAKEMON_SPRITES = __FAKEMON_JSON__;
 
-function updatePokemonText(img, speciesId) {
-    const displayName = window.FAKEMON_SPRITES[speciesId].displayName;
-    if (!displayName) return;
-
-    const battleDiv = img.closest('.battle .innerbattle');
-    if (!battleDiv) return;
-
-    const leftStat = battleDiv.querySelectorAll('.lstatbar .leftstatbar strong');
-    const rightStat = battleDiv.querySelectorAll('.rstatbar .leftstatbar strong');
-
-    [leftStat, rightStat].forEach(el => {
-        if (el && el.textContent.toLowerCase() === speciesId.toLowerCase()) {
-            el.textContent = displayName;
-        }
-    });
-}
-
 function replaceBattleSprites() {
     document.querySelectorAll('.battle img').forEach(img => {
         const src = img.src.toLowerCase();
@@ -91,7 +74,6 @@ function replaceBattleSprites() {
                         });
                         img._sizeObserver.observe(img, { attributes: true, attributeFilter: ['style'] });
                     }
-                    updatePokemonText(img, speciesId);
                 }
                 break;
             }
