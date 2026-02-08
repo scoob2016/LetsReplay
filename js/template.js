@@ -60,28 +60,28 @@ window.FAKEMON_SPRITES = __FAKEMON_JSON__;
                 const id = toID(species);
                 if (window.FAKEMON_SPRITES?.[id]) {
                     const s = window.FAKEMON_SPRITES[id];
-                    return {url: side === 'back' ? s.back : s.front, w:96, h:96, y:0};
+                    return {url: side === 'back' ? s.back : s.front, w: 80, h: 80, y:0};
                 }
                 return origDex.call(this, species, side, options);
             };
         }
 
-        if (window.Battle && Battle.prototype.getSpriteUrl) {
-            const origBattle = Battle.prototype.getSpriteUrl;
-            Battle.prototype.getSpriteUrl = function(pokemon, isBack) {
+        if (window.Replay && Replay.prototype.getSpriteUrl) {
+            const origReplay = Replay.prototype.getSpriteUrl;
+            Replay.prototype.getSpriteUrl = function(pokemon, isBack) {
                 const id = toID(pokemon.species || pokemon);
                 if (window.FAKEMON_SPRITES?.[id]) {
                     const s = window.FAKEMON_SPRITES[id];
                     return isBack ? s.back : s.front;
                 }
-                return origBattle.call(this, pokemon, isBack);
+                return origReplay.call(this, pokemon, isBack);
             };
         }
 
-        if (window.Dex && Dex.getSpriteData && window.Battle && Battle.prototype.getSpriteUrl) {
+        if (window.Dex && Dex.getSpriteData && window.Replay && Replay.prototype.getSpriteUrl) {
             clearInterval(interval);
         }
-    }, 20);
+    }, 50);
 })();
 </script>
 </head>
