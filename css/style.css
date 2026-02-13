@@ -73,13 +73,30 @@ p {
     box-sizing: border-box;
 }
 
+.top-bar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: var(--box-bg, #222);
+    border-bottom: 1px solid #444;
+}
+
 #starReplayButton {
-    font-size: 1.2em;
+    font-size: 1em;
     cursor: pointer;
     background: none;
     border: none;
-    color: #f5c518;
+    color: gold;
 }
+
 #starReplayButton.starred {
-    color: #ffb300;
+    color: orange;
+}
+
+#savedReplaysDropdown {
+    background: #111;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 4px 6px;
 }
