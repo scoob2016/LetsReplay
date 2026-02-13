@@ -98,10 +98,10 @@ async function updateStarButton() {
 
     const starred = await isReplayStarred(id);
     if (starred) {
-        button.textContent = "★ Starred";
+        button.textContent = "★ Favourited";
         button.classList.add("starred");
     } else {
-        button.textContent = "☆ Star";
+        button.textContent = "☆ Favourite";
         button.classList.remove("starred");
     }
 }
